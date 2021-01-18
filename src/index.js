@@ -23,7 +23,7 @@ const asyncPipe = (...fns) => x => fns.reduce(async (y, f) => f(await y), x);
  *
  * await asyncSeq([1,2,3]) // 5
  */
-const asyncSeries = f => xs => xs.reduce((x, y) => x.then(() => f(y)), Promise.resolve())
+const asyncSeries = fn => xs => xs.reduce((x, y) => x.then(() => fn(y)), Promise.resolve())
 
 /**
  * @description Apply an async function to a list of arguments in sequence collecting all the results and returning them in a list
