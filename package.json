@@ -1,6 +1,6 @@
 {
   "name": "@mighty-maker/async-operators",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Async operators for composable async pipelines",
   "main": "./src/index.js",
   "scripts": {
