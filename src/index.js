@@ -26,19 +26,32 @@ const asyncPipe = (...fns) => x => fns.reduce(async (y, f) => f(await y), x);
 const asyncSeries = fn => xs => xs.reduce((x, y) => x.then(() => fn(y)), Promise.resolve())
 
 /**
- * @description Apply an async function to a list of arguments in sequence collecting all the results and returning them in a list
+ * @description Apply an async function to a list of arguments, and returning a list of the results
  * @param  {function} fn An async function to apply to an array of arguments
- * @returns {function(any[]): any[]} A function applied in sequence to a given list of arguments
+ * @returns {function(any[]): any[]} A function applied to a given list of arguments
  * 
  * @example
- * const asyncSeq = asyncReduce(async (x) => new Promise(resolve => setTimeout(() => resolve(x + 2), 500)))
+ * const asyncSeq = asyncMap(async (x) => new Promise(resolve => setTimeout(() => resolve(x + 2), 500)))
  *
  * await asyncSeq([1,2,3]) // [3, 4, 5]
  */
-const asyncReduce = fn => xs => xs.reduce((y, x) => y.then((col) => fn(x).then(res => [...col, res])), Promise.resolve([]))
+const asyncMap = fn => xs => xs.reduce((y, x) => y.then((col) => fn(x).then(res => [...col, res])), Promise.resolve([]))
+
+/**
+ * @description Apply an async function to a list of arguments, and returning a list of the results
+ * @param  {function} fn An async function to apply to an array of arguments
+ * @returns {function(any[]): any[]} A function applied to a given list of arguments
+ * 
+ * @example
+ * const asyncReduce = asyncReduce((acc, val) => new Promise(resolve => setTimeout(() => resolve(acc + val), 500)), 0)([1,2,3])
+ *
+ * await asyncReduce([1,2,3]) // 12
+ */
+const asyncReduce = (fn, acc) => xs => xs.reduce((y, x) => y.then(res => fn(res, x)), Promise.resolve(acc))
 
 module.exports = {
     asyncPipe,
     asyncSeries,
+    asyncMap,
     asyncReduce
 }
