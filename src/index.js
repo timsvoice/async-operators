@@ -40,7 +40,8 @@ const asyncMap = fn => xs => xs.reduce((y, x) => y.then((col) => fn(x).then(res 
 /**
  * @description Apply an async function to a list of arguments, and returning a list of the results
  * @param  {function} fn An async function to apply to an array of arguments
- * @returns {function(any[]): any[]} A function applied to a given list of arguments
+ * @param  {any} acc A reducer starting value
+ * @returns {function(any[]): any} A function applied to a given list of arguments
  * 
  * @example
  * const asyncReduce = asyncReduce((acc, val) => new Promise(resolve => setTimeout(() => resolve(acc + val), 500)), 0)([1,2,3])
